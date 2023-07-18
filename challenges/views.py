@@ -20,17 +20,10 @@ monthly_challenges={
 
 
 def index(request):
-    list_item  = ""
     months =list(monthly_challenges.keys())
-
-    for month in months:
-        capital_months = month.capitalize()
-        month_path = reverse("monthly-challenge", args=[month])
-        list_item += f'<li> <a href="{month_path}"> {capital_months} </a> </li>'
-    
-    response_data = f'<ul>{list_item}</ul>'
-    
-    return HttpResponse(response_data)
+    return render(request, "challenges/index.html", {
+        "months": months,
+    })
 
 
 def monthly_challenge_by_number(request, month):
@@ -49,7 +42,7 @@ def monthly_challenge(request, month):
         challenge_text=monthly_challenges[month]
         return render(request, "challenges/challenge.html", {
             "text": challenge_text,
-            "month_name": month.capitalize()
+            "month_name": month,
         })
     except:
         return HttpResponseNotFound(f"<h1>This is not a valid month.</h1>")
